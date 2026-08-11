@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phase 1 — Opening, Hero &amp; Events | Shubham &amp; Tanya</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=Jost:wght@300;400;500;600&family=Noto+Serif+Devanagari:wght@500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #F7F1E8;
+    --surface: #FFFFFF;
+    --ink: #2B231F;
+    --ink-soft: #6b5f57;
+    --wine: #6B2338;
+    --wine-deep: #4E1A29;
+    --wine-tint: #B98A97;
+    --gold: #B5893F;
+    --gold-soft: #D9BE8C;
+
+    --font-display: "Fraunces", serif;
+    --font-body: "Jost", sans-serif;
+    --font-devanagari: "Noto Serif Devanagari", serif;
+
+    --space-1: clamp(0.5rem, 0.4rem + 0.5vw, 0.75rem);
+    --space-2: clamp(1rem, 0.8rem + 1vw, 1.5rem);
+    --space-3: clamp(1.75rem, 1.4rem + 1.75vw, 2.75rem);
+    --space-4: clamp(3rem, 2.2rem + 4vw, 5rem);
+
+    --ease-soft: cubic-bezier(.22,1,.36,1);
+    --ease-bloom: cubic-bezier(.34,1.56,.64,1);
+  }
+
+  *, *::before, *::after{ box-sizing: border-box; }
+
+  html{
+    scroll-behavior: smooth;
+    scrollbar-width: none;       
+    -ms-overflow-style: none;    
+  }
+  html::-webkit-scrollbar{ display: none; } 
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ================= GUARANTEED VISIBLE PETAL CANVAS ================= */
+  .petal-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 99999;
+    overflow: hidden;
+  }
+
+  .falling-petal {
+    position: absolute;
+    top: -10%;
+    pointer-events: none;
+    border-radius: 12px 1px 12px 1px;
+    background: linear-gradient(135deg, #B98A97 0%, #6B2338 100%);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    opacity: 0.85;
+    will-change: transform;
+    animation: fall-and-sway linear infinite;
+  }
+
+  @keyframes fall-and-sway {
+    0% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0.9; }
+    100% { transform: translate3d(-40vw, 115vh, 0) rotate(720deg); opacity: 0.2; }
+  }
+
+  /* ================= Corner Florals (Image-Based) ================= */
+  .top-left-decoration,
+  .top-right-decoration {
+    position: absolute;
+    top: 0;
+    z-index: 10;
+    pointer-events: none;
+    max-width: clamp(200px, 35vw, 450px);
+    width: auto;
+    height: auto;
+    animation: fade-in 1.5s var(--ease-bloom) forwards;
+  }
+  
+  .top-left-decoration { left: 0; }
+  .top-right-decoration { right: 0; }
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 900px) {
+    .top-left-decoration,
+    .top-right-decoration { max-width: 45%; }
+  }
+
+  /* ================= Section base & Sticky Scroll ================= */
+  section{ position: relative; width: 100%; }
+
+  .reveal{
+    opacity: 0;
+    transform: translateY(34px) scale(0.97);
+    transition: opacity 1s var(--ease-soft), transform 1s var(--ease-soft);
+  }
+  .reveal.is-visible{ opacity: 1; transform: translateY(0) scale(1); }
+
+  /* ================= Landing ================= */
+  .landing{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--space-4) var(--space-2);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: radial-gradient(60% 50% at 50% 0%, rgba(181,137,63,0.08), transparent 60%), var(--bg);
+  }
+
+  .landing__blessing{
+    font-family: var(--font-devanagari);
+    font-size: clamp(1rem, 0.9rem + 0.35vw, 1.2rem);
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    margin: 0 0 var(--space-4);
+    opacity: 0;
+    animation: rise 0.9s var(--ease-soft) forwards;
+    animation-delay: 0.1s;
+  }
+
+  .couple{
+    width: clamp(200px, 38vw, 320px);
+    height: auto;
+    margin-bottom: var(--space-3);
+    opacity: 0;
+    filter: drop-shadow(0 18px 34px rgba(75,26,41,0.22));
+    animation: couple-in 1s var(--ease-bloom) forwards;
+    animation-delay: 0.5s;
+  }
+  
+  @keyframes couple-in{
+    from{ opacity: 0; transform: scale(0.92) translateY(16px); }
+    to{ opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .landing__eyebrow{
+    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.4em;
+    text-transform: uppercase; color: var(--ink-soft);
+    margin: 0 0 var(--space-1);
+    opacity: 0; animation: rise 0.9s var(--ease-soft) forwards; animation-delay: 1.05s;
+  }
+
+  .landing__date{
+    font-family: var(--font-display); font-weight: 500;
+    font-size: clamp(2.75rem, 2.1rem + 4vw, 5rem); letter-spacing: 0.02em;
+    color: var(--wine-deep); margin: 0 0 var(--space-2);
+    opacity: 0; animation: rise 1s var(--ease-soft) forwards; animation-delay: 1.25s;
+  }
+
+  .landing__names{
+    font-size: clamp(0.95rem, 0.88rem + 0.3vw, 1.1rem); letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-soft); margin: 0;
+    opacity: 0; animation: rise 0.9s var(--ease-soft) forwards; animation-delay: 1.45s;
+  }
+  .landing__names strong{ color: var(--wine); font-weight: 600; letter-spacing: 0.05em; }
+
+  .scroll-cue{
+    position: absolute; bottom: var(--space-3); left: 50%;
+    transform: translateX(-50%); display: flex; flex-direction: column;
+    align-items: center; gap: 8px; font-size: 0.65rem; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--ink-soft);
+    opacity: 0; animation: rise 0.9s var(--ease-soft) forwards, bob 2.6s ease-in-out infinite;
+    animation-delay: 1.9s, 1.9s;
+  }
+  .scroll-cue svg{ width: 16px; height: 24px; }
+
+  @keyframes rise{ from{ opacity: 0; transform: translateY(18px); } to{ opacity: 1; transform: translateY(0); } }
+  @keyframes bob{ 0%,100%{ transform: translate(-50%,0); } 50%{ transform: translate(-50%,6px); } }
+
+  /* ================= Hero ================= */
+  .hero{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--space-4) var(--space-2) var(--space-3);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: radial-gradient(70% 60% at 50% 0%, rgba(255,255,255,0.8), transparent 70%), var(--bg);
+    box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.08);
+    border-top: 1px solid rgba(255,255,255,0.4);
+  }
+  .hero__inner{ max-width: 40rem; display: flex; flex-direction: column; align-items: center; }
+
+  .hero__eyebrow{
+    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--ink-soft); margin: 0 0 var(--space-2);
+  }
+  .hero__names{
+    display: flex; align-items: center; justify-content: center;
+    gap: clamp(0.5rem, 1vw, 1.25rem); flex-wrap: wrap; margin: 0;
+  }
+  .hero__name{
+    font-family: var(--font-display); font-weight: 500;
+    font-size: clamp(3rem, 2.5rem + 5vw, 6.5rem);
+    line-height: 1; letter-spacing: -0.01em; color: var(--wine-deep); margin: 0;
+  }
+  .hero__amp{
+    font-family: var(--font-display); font-style: italic; font-weight: 500;
+    font-size: clamp(1.75rem, 1.4rem + 1.5vw, 2.75rem); color: var(--gold);
+  }
+  .hero__tagline{
+    font-weight: 400; font-size: clamp(0.85rem, 0.78rem + 0.3vw, 1.1rem);
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft);
+    margin: var(--space-3) 0 var(--space-2);
+  }
+  .divider-motif{ width: clamp(160px, 25vw, 260px); height: auto; color: var(--gold); margin: var(--space-2) 0; }
+  .hero__details{
+    font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.25rem); color: var(--ink);
+    line-height: 1.7; margin: 0;
+  }
+  .hero__details strong{ color: var(--wine); font-weight: 600; }
+
+  /* ================= Interactive Horizontal Carousel ================= */
+  .events{ 
+    min-height: 100vh;
+    padding: var(--space-4) 0; /* Removed side padding for full bleed */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center; 
+    position: relative;
+    z-index: 3;
+    background: var(--bg);
+    box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+  
+  .events__eyebrow{
+    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--ink-soft); margin: 0 0 var(--space-1);
+  }
+  
+  .events__title{
+    font-family: var(--font-display); font-weight: 500;
+    font-size: clamp(2.2rem, 1.8rem + 2.5vw, 3.5rem);
+    color: var(--wine-deep); margin: 0 0 10px;
+  }
+
+  .swipe-hint {
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin: 0 0 var(--space-3);
+    animation: drift 2s infinite alternate ease-in-out;
+  }
+
+  @keyframes drift {
+    from { transform: translateX(-4px); }
+    to { transform: translateX(4px); }
+  }
+
+  /* Carousel Track */
+  .carousel {
+    display: flex;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    padding: var(--space-3) 0;
+    width: 100vw;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; /* Smooth iOS scrolling */
+    -ms-overflow-style: none; /* IE/Edge hide scrollbar */
+    scrollbar-width: none; /* Firefox hide scrollbar */
+  }
+  
+  .carousel::-webkit-scrollbar { display: none; /* Chrome/Safari hide scrollbar */ }
+
+  /* Spacer pseudo-elements strictly calculated to perfectly center the first and last card */
+  .carousel::before,
+  .carousel::after {
+    content: '';
+    /* Card width is clamp(260px, 75vw, 340px). Subtract half of that from 50vw to get exact padding */
+    flex: 0 0 calc(50vw - (clamp(260px, 75vw, 340px) / 2));
+  }
+
+  /* Individual Carousel Card */
+  .event-card {
+    flex: 0 0 clamp(260px, 75vw, 340px); /* Responsive fixed width */
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+    background: var(--surface);
+    border: 1px solid rgba(181,137,63,0.25);
+    border-radius: 24px;
+    padding: var(--space-3) var(--space-2);
+    text-align: center;
+    
+    /* Cover Flow Physics */
+    opacity: 0.5;
+    transform: scale(0.85);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    transition: transform 0.5s var(--ease-soft), opacity 0.5s var(--ease-soft), box-shadow 0.5s var(--ease-soft);
+  }
+  
+  /* Class applied by JavaScript when card is in the center of the screen */
+  .event-card.is-focused {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 20px 40px -15px rgba(75,26,41,0.35);
+    border-color: rgba(181,137,63,0.6);
+  }
+  
+  .event-card__icon { width: 50px; height: 50px; color: var(--wine); margin: 0 auto var(--space-2); }
+  .event-card__name {
+    font-family: var(--font-display); font-weight: 600; font-size: 1.8rem;
+    color: var(--wine-deep); margin: 0 0 6px;
+  }
+  .event-card__date {
+    font-size: 0.95rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gold); margin: 0 0 8px; font-weight: 500;
+  }
+  .event-card__time { font-size: 1rem; color: var(--ink-soft); margin: 0; }
+  .event-card__note { font-size: 0.85rem; color: var(--ink-soft); opacity: 0.75; margin: 12px 0 0; font-style: italic; }
+
+</style>
+</head>
+<body>
+
+  <!-- Petals float in this overlay container above all cards -->
+  <div class="petal-canvas" id="petalCanvas"></div>
+
+  <!-- ============ LANDING ============ -->
+  <section class="landing">
+    <img src="assets/top_left.png" alt="image-top-left" class="top-left-decoration"> 
+    <img src="assets/top_right.png" alt="image-top-right" class="top-right-decoration">
+    <p class="landing__blessing">॥ श्री महावीराय नमः ॥</p>
+    <img class="couple" src="./assets/img/ggg.gif" alt="Illustration of Shubham and Tanya standing together" loading="eager">
+    <p class="landing__eyebrow">Save the Date</p>
+    <p class="landing__date">30 · 11 · 2026</p>
+    <p class="landing__names"><strong>Shubham</strong> &amp; <strong>Tanya</strong> are getting married</p>
+    <div class="scroll-cue">
+      <span>Scroll</span>
+      <svg viewBox="0 0 14 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="1" y="1" width="12" height="18" rx="6" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="7" cy="6" r="1.8" fill="currentColor"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero reveal">
+    <div class="hero__inner">
+      <p class="hero__eyebrow">Together with their families</p>
+      <div class="hero__names">
+        <h1 class="hero__name">Shubham</h1>
+        <span class="hero__amp" aria-hidden="true">&amp;</span>
+        <h1 class="hero__name">Tanya</h1>
+      </div>
+      <p class="hero__tagline">are getting married</p>
+      <svg class="divider-motif" viewBox="0 0 220 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M2 20C40 4 80 4 110 20C140 36 180 36 218 20" stroke="currentColor" stroke-width="1.1"/>
+        <path d="M100 20C103 14 109 11 115 13C111 17 112 22 116 25C109 26 103 24 100 20Z" fill="currentColor"/>
+        <path d="M120 20C123 14 129 11 135 13C131 17 132 22 136 25C129 26 123 24 120 20Z" fill="currentColor" transform="scale(-1,1) translate(-255,0)"/>
+        <circle cx="110" cy="20" r="2.5" fill="currentColor"/>
+      </svg>
+      <p class="hero__details">
+        on <strong>Monday, 30th November 2026</strong><br>
+        at <strong>Maniratna Resort</strong>, Amravati, Maharashtra
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ EVENTS (Interactive Snap Carousel) ============ -->
+  <section class="events reveal">
+    <p class="events__eyebrow">The Celebrations</p>
+    <h2 class="events__title">Wedding Festivities</h2>
+    <p class="swipe-hint">Swipe to explore ➔</p>
+
+    <div class="carousel" id="eventCarousel">
+      
+      <article class="event-card">
+        <svg class="event-card__icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6">
+          <circle cx="20" cy="24" r="9"/>
+          <path d="M20 4c-3 4-3 7 0 10 3-3 3-6 0-10Z" fill="currentColor" stroke="none"/>
+          <path d="M12 20c1-3 3-4 4-4M28 20c-1-3-3-4-4-4" stroke-linecap="round"/>
+        </svg>
+        <h3 class="event-card__name">Haldi</h3>
+        <p class="event-card__date">29th November</p>
+        <p class="event-card__time">10:00 AM Onwards</p>
+      </article>
+
+      <article class="event-card">
+        <svg class="event-card__icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M12 28V12l16 4v14" stroke-linejoin="round"/>
+          <circle cx="12" cy="30" r="2.4"/>
+          <circle cx="28" cy="30" r="2.4"/>
+        </svg>
+        <h3 class="event-card__name">Sangeet</h3>
+        <p class="event-card__date">29th November</p>
+        <p class="event-card__time">7:00 PM Onwards</p>
+      </article>
+
+      <article class="event-card">
+        <svg class="event-card__icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M8 30c2-10 6-16 12-16s10 6 12 16" stroke-linecap="round"/>
+          <circle cx="20" cy="10" r="3"/>
+          <path d="M6 30h28" stroke-linecap="round"/>
+        </svg>
+        <h3 class="event-card__name">Baarat</h3>
+        <p class="event-card__date">30th November</p>
+        <p class="event-card__time">11:00 AM Onwards</p>
+      </article>
+
+      <article class="event-card">
+        <svg class="event-card__icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M14 8h12l-2 12a4 4 0 0 1-8 0L14 8Z" stroke-linejoin="round"/>
+          <path d="M20 20v10M14 30h12" stroke-linecap="round"/>
+        </svg>
+        <h3 class="event-card__name">Reception</h3>
+        <p class="event-card__date">30th November</p>
+        <p class="event-card__time">Evening</p>
+        <p class="event-card__note">Exact time to be announced</p>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Scripts -->
+  <script>
+    // 1. Force Petals to render (Using user's modified sizing)
+    (function spawnPetals() {
+      const container = document.getElementById('petalCanvas');
+      if (!container) return;
+      const totalPetals = 45; 
+      
+      for (let i = 0; i < totalPetals; i++) {
+        const petal = document.createElement('div');
+        petal.className = 'falling-petal';
+        
+        // --- Custom sizing based on user request ---
+        const width = 9 + Math.random() * 12;
+        const height = width * 1.1; 
+        
+        petal.style.width = width + 'px';
+        petal.style.height = height + 'px';
+        petal.style.left = (Math.random() * 80 + 20) + 'vw';
+        
+        const duration = 6 + Math.random() * 7;
+        const delay = Math.random() * duration * -1;
+        
+        petal.style.animationDuration = duration + 's';
+        petal.style.animationDelay = delay + 's';
+        
+        container.appendChild(petal);
+      }
+    })();
+
+    // 2. Native Scroll Reveal (slides items up vertically on page load)
+    (function(){
+      var targets = document.querySelectorAll('.reveal');
+      if(!('IntersectionObserver' in window)){
+        targets.forEach(function(t){ t.classList.add('is-visible'); });
+        return;
+      }
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){
+            entry.target.classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      targets.forEach(function(t){ io.observe(t); });
+    })();
+
+    // 3. Carousel Intersection Observer (The "Cover Flow" scale effect)
+    (function(){
+      const carouselContainer = document.getElementById('eventCarousel');
+      const cards = document.querySelectorAll('.event-card');
+      
+      if(!carouselContainer || !cards.length || !('IntersectionObserver' in window)) {
+        // Fallback if browser doesn't support observer
+        cards.forEach(card => card.classList.add('is-focused'));
+        return;
+      }
+
+      // Watches which card is currently in the center of the horizontal scroll
+      const carouselObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-focused');
+          } else {
+            entry.target.classList.remove('is-focused');
+          }
+        });
+      }, {
+        root: carouselContainer,
+        // Trigger only when the card is close to the middle of the screen
+        rootMargin: '0px -30% 0px -30%', 
+        threshold: 0.1
+      });
+
+      cards.forEach(card => carouselObserver.observe(card));
+    })();
+  </script>
+
+</body>
+</html>
