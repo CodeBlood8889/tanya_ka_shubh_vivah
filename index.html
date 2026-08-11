@@ -44,16 +44,17 @@
   }
   html::-webkit-scrollbar{ display: none; } 
 
+  /* Moved background gradient to body so it sits behind everything */
   body{
     margin: 0;
-    background: var(--bg);
+    background: radial-gradient(60% 50% at 50% 0%, rgba(181,137,63,0.08), transparent 60%), var(--bg);
     color: var(--ink);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
 
-  /* ================= GUARANTEED VISIBLE PETAL CANVAS ================= */
+  /* ================= PETAL CANVAS (Z-INDEX: 0) ================= */
   .petal-canvas {
     position: fixed;
     top: 0;
@@ -61,7 +62,7 @@
     width: 100vw;
     height: 100vh;
     pointer-events: none;
-    z-index: 99999;
+    z-index: 0; /* Ensures petals fall behind text and sticky cards */
     overflow: hidden;
   }
 
@@ -82,7 +83,7 @@
     100% { transform: translate3d(-40vw, 115vh, 0) rotate(720deg); opacity: 0.2; }
   }
 
-  /* ================= Corner Florals (Image-Based) ================= */
+  /* ================= Corner Florals ================= */
   .top-left-decoration,
   .top-right-decoration {
     position: absolute;
@@ -129,8 +130,8 @@
     padding: var(--space-4) var(--space-2);
     position: sticky;
     top: 0;
-    z-index: 1;
-    background: radial-gradient(60% 50% at 50% 0%, rgba(181,137,63,0.08), transparent 60%), var(--bg);
+    z-index: 1; /* Sits above the petals (z-index: 0) */
+    background: transparent; /* Allows petals to be seen behind text */
   }
 
   .landing__blessing{
@@ -180,18 +181,39 @@
   }
   .landing__names strong{ color: var(--wine); font-weight: 600; letter-spacing: 0.05em; }
 
+  /* Redesigned Prominent Scroll Cue */
   .scroll-cue{
-    position: absolute; bottom: var(--space-3); left: 50%;
-    transform: translateX(-50%); display: flex; flex-direction: column;
-    align-items: center; gap: 8px; font-size: 0.65rem; letter-spacing: 0.25em;
-    text-transform: uppercase; color: var(--ink-soft);
-    opacity: 0; animation: rise 0.9s var(--ease-soft) forwards, bob 2.6s ease-in-out infinite;
-    animation-delay: 1.9s, 1.9s;
+    position: absolute; 
+    bottom: var(--space-4); 
+    left: 50%;
+    transform: translateX(-50%); 
+    display: flex; 
+    flex-direction: column;
+    align-items: center; 
+    gap: 8px; 
+    font-size: 0.75rem; 
+    letter-spacing: 0.25em;
+    text-transform: uppercase; 
+    color: var(--wine); /* Colored to draw the eye */
+    font-weight: 600;
+    opacity: 0; 
+    animation: fade-in-up 1s var(--ease-soft) forwards;
+    animation-delay: 2.2s; /* Appears after landing content settles */
   }
-  .scroll-cue svg{ width: 16px; height: 24px; }
+  .scroll-cue svg{ width: 18px; height: 26px; }
+  .scroll-dot {
+    animation: scroll-wheel 2s infinite ease-in-out;
+  }
 
-  @keyframes rise{ from{ opacity: 0; transform: translateY(18px); } to{ opacity: 1; transform: translateY(0); } }
-  @keyframes bob{ 0%,100%{ transform: translate(-50%,0); } 50%{ transform: translate(-50%,6px); } }
+  @keyframes fade-in-up { 
+    from { opacity: 0; transform: translate(-50%, 20px); } 
+    to { opacity: 1; transform: translate(-50%, 0); } 
+  }
+  @keyframes scroll-wheel {
+    0% { transform: translateY(0); opacity: 1; }
+    50% { transform: translateY(6px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 0; }
+  }
 
   /* ================= Hero ================= */
   .hero{
@@ -204,8 +226,8 @@
     padding: var(--space-4) var(--space-2) var(--space-3);
     position: sticky;
     top: 0;
-    z-index: 2;
-    background: radial-gradient(70% 60% at 50% 0%, rgba(255,255,255,0.8), transparent 70%), var(--bg);
+    z-index: 2; /* Hides petals when scrolled over */
+    background: radial-gradient(70% 60% at 50% 0%, rgba(255,255,255,0.9), transparent 70%), var(--bg);
     box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.08);
     border-top: 1px solid rgba(255,255,255,0.4);
   }
@@ -243,13 +265,13 @@
   /* ================= Interactive Horizontal Carousel ================= */
   .events{ 
     min-height: 100vh;
-    padding: var(--space-4) 0; /* Removed side padding for full bleed */
+    padding: var(--space-4) 0; 
     display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: center; 
     position: relative;
-    z-index: 3;
+    z-index: 3; /* Hides petals when scrolled over */
     background: var(--bg);
     box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.08);
     overflow: hidden;
@@ -273,6 +295,7 @@
     text-transform: uppercase;
     margin: 0 0 var(--space-3);
     animation: drift 2s infinite alternate ease-in-out;
+    transition: opacity 0.5s ease; /* Smooth fade out when scrolled */
   }
 
   @keyframes drift {
@@ -289,24 +312,22 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch; /* Smooth iOS scrolling */
-    -ms-overflow-style: none; /* IE/Edge hide scrollbar */
-    scrollbar-width: none; /* Firefox hide scrollbar */
+    -webkit-overflow-scrolling: touch; 
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
   }
   
-  .carousel::-webkit-scrollbar { display: none; /* Chrome/Safari hide scrollbar */ }
+  .carousel::-webkit-scrollbar { display: none; }
 
-  /* Spacer pseudo-elements strictly calculated to perfectly center the first and last card */
   .carousel::before,
   .carousel::after {
     content: '';
-    /* Card width is clamp(260px, 75vw, 340px). Subtract half of that from 50vw to get exact padding */
     flex: 0 0 calc(50vw - (clamp(260px, 75vw, 340px) / 2));
   }
 
   /* Individual Carousel Card */
   .event-card {
-    flex: 0 0 clamp(260px, 75vw, 340px); /* Responsive fixed width */
+    flex: 0 0 clamp(260px, 75vw, 340px); 
     scroll-snap-align: center;
     scroll-snap-stop: always;
     background: var(--surface);
@@ -315,14 +336,12 @@
     padding: var(--space-3) var(--space-2);
     text-align: center;
     
-    /* Cover Flow Physics */
     opacity: 0.5;
     transform: scale(0.85);
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     transition: transform 0.5s var(--ease-soft), opacity 0.5s var(--ease-soft), box-shadow 0.5s var(--ease-soft);
   }
   
-  /* Class applied by JavaScript when card is in the center of the screen */
   .event-card.is-focused {
     opacity: 1;
     transform: scale(1);
@@ -346,7 +365,7 @@
 </head>
 <body>
 
-  <!-- Petals float in this overlay container above all cards -->
+  <!-- Petals float behind text here -->
   <div class="petal-canvas" id="petalCanvas"></div>
 
   <!-- ============ LANDING ============ -->
@@ -359,10 +378,10 @@
     <p class="landing__date">30 · 11 · 2026</p>
     <p class="landing__names"><strong>Shubham</strong> &amp; <strong>Tanya</strong> are getting married</p>
     <div class="scroll-cue">
-      <span>Scroll</span>
+      <span class="scroll-text">Scroll Down</span>
       <svg viewBox="0 0 14 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="1" y="1" width="12" height="18" rx="6" stroke="currentColor" stroke-width="1.5"/>
-        <circle cx="7" cy="6" r="1.8" fill="currentColor"/>
+        <circle cx="7" cy="6" r="1.8" fill="currentColor" class="scroll-dot"/>
       </svg>
     </div>
   </section>
@@ -394,7 +413,7 @@
   <section class="events reveal">
     <p class="events__eyebrow">The Celebrations</p>
     <h2 class="events__title">Wedding Festivities</h2>
-    <p class="swipe-hint">Swipe to explore ➔</p>
+    <p class="swipe-hint" id="swipeHint">← Swipe or Scroll to explore →</p>
 
     <div class="carousel" id="eventCarousel">
       
@@ -447,17 +466,20 @@
 
   <!-- Scripts -->
   <script>
-    // 1. Force Petals to render (Using user's modified sizing)
-    (function spawnPetals() {
+    // 1. Delayed Petal Generation (starts after 1.5s)
+    setTimeout(function spawnPetals() {
       const container = document.getElementById('petalCanvas');
       if (!container) return;
-      const totalPetals = 45; 
+      
+      // *** CHANGE PETAL QUANTITY HERE ***
+      // Adjust this number to make the petals more or less dense
+      const totalPetals = 20; 
       
       for (let i = 0; i < totalPetals; i++) {
         const petal = document.createElement('div');
         petal.className = 'falling-petal';
         
-        // --- Custom sizing based on user request ---
+        // Custom sizing based on user request
         const width = 9 + Math.random() * 12;
         const height = width * 1.1; 
         
@@ -466,14 +488,16 @@
         petal.style.left = (Math.random() * 80 + 20) + 'vw';
         
         const duration = 6 + Math.random() * 7;
-        const delay = Math.random() * duration * -1;
+        
+        // Positive delay forces them to start falling from the top edge, staggered
+        const delay = Math.random() * 4; 
         
         petal.style.animationDuration = duration + 's';
         petal.style.animationDelay = delay + 's';
         
         container.appendChild(petal);
       }
-    })();
+    }, 1500); // 1.5 second delay before the script executes
 
     // 2. Native Scroll Reveal (slides items up vertically on page load)
     (function(){
@@ -493,18 +517,27 @@
       targets.forEach(function(t){ io.observe(t); });
     })();
 
-    // 3. Carousel Intersection Observer (The "Cover Flow" scale effect)
+    // 3. Carousel Intersection Observer & Auto-Hiding Hint
     (function(){
       const carouselContainer = document.getElementById('eventCarousel');
       const cards = document.querySelectorAll('.event-card');
+      const swipeHint = document.getElementById('swipeHint');
       
-      if(!carouselContainer || !cards.length || !('IntersectionObserver' in window)) {
-        // Fallback if browser doesn't support observer
+      if(!carouselContainer || !cards.length) return;
+
+      // Hide the hint permanently as soon as the user scrolls the carousel
+      carouselContainer.addEventListener('scroll', function() {
+        if(swipeHint) {
+          swipeHint.style.opacity = '0';
+          swipeHint.style.pointerEvents = 'none';
+        }
+      }, { once: true });
+
+      if(!('IntersectionObserver' in window)) {
         cards.forEach(card => card.classList.add('is-focused'));
         return;
       }
 
-      // Watches which card is currently in the center of the horizontal scroll
       const carouselObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
@@ -515,7 +548,6 @@
         });
       }, {
         root: carouselContainer,
-        // Trigger only when the card is close to the middle of the screen
         rootMargin: '0px -30% 0px -30%', 
         threshold: 0.1
       });
