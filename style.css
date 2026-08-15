@@ -40,7 +40,7 @@ body{
   overflow-x: hidden;
 }
 
-/* ================= ELEGANT SPLASH / LOADER SCREEN ================= */
+/* ================= TAP TO OPEN ENVELOPE ================= */
 .intro-loader {
   position: fixed;
   inset: 0;
@@ -103,27 +103,23 @@ body{
   margin: 0 0 var(--space-3);
 }
 
-.loader-bar-wrap {
-  width: 130px;
-  height: 2px;
-  background: rgba(181, 137, 63, 0.2);
-  border-radius: 2px;
-  overflow: hidden;
-  position: relative;
+.loader-tap-pulse {
+  margin-top: var(--space-2);
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--wine);
+  border: 1px solid var(--wine);
+  padding: 12px 32px;
+  border-radius: 50px;
+  animation: pulse-border 2s infinite ease-in-out;
 }
 
-.loader-bar {
-  position: absolute;
-  top: 0; left: 0; bottom: 0;
-  width: 0%;
-  background: linear-gradient(90deg, var(--gold), var(--wine));
-  animation: load-progress 2.4s ease-in-out forwards;
-}
-
-@keyframes load-progress {
-  0% { width: 0%; }
-  45% { width: 60%; }
-  100% { width: 100%; }
+@keyframes pulse-border {
+  0% { box-shadow: 0 0 0 0 rgba(107, 35, 56, 0.3); }
+  70% { box-shadow: 0 0 0 15px rgba(107, 35, 56, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(107, 35, 56, 0); }
 }
 
 @keyframes loader-rise {
@@ -211,27 +207,64 @@ section{ position: relative; width: 100%; }
   background: transparent; 
 }
 
-.landing__blessing{
+/* Enhanced Golden Shimmer Text Effect */
+.landing__blessing {
   font-family: var(--font-devanagari);
   font-size: clamp(1rem, 0.9rem + 0.35vw, 1.2rem);
-  color: var(--gold);
   letter-spacing: 0.05em;
   margin: 0 0 var(--space-4);
+  
+  /* Metallic Gradient Setup */
+  background: linear-gradient(to right, #B5893F 0%, #F1C40F 50%, #B5893F 100%);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  
+  /* Dropped shadow to make the transparent text pop */
+  filter: drop-shadow(0 2px 10px rgba(181, 137, 63, 0.6));
+  
   opacity: 0;
-  animation: rise 0.9s var(--ease-soft) forwards;
-  animation-delay: 0.1s;
+  animation: rise 0.9s var(--ease-soft) forwards 0.1s, gold-shimmer 4s linear infinite;
+}
+
+@keyframes gold-shimmer {
+  to { background-position: 200% center; }
+}
+
+/* Huge, vibrant Mandap Glow */
+.landing__couple-wrap {
+  position: relative;
+  display: inline-block;
+  margin-bottom: var(--space-3);
+  opacity: 0;
+  animation: couple-in 1s var(--ease-bloom) forwards;
+  animation-delay: 0.5s;
+}
+
+.landing__couple-wrap::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 180%; height: 180%; /* Much larger glow */
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.35) 0%, rgba(181, 137, 63, 0.15) 30%, transparent 65%);
+  border-radius: 50%;
+  z-index: -1;
+  animation: breathe-glow 3s infinite alternate ease-in-out;
+}
+
+@keyframes breathe-glow {
+  from { transform: translate(-50%, -50%) scale(0.9); opacity: 0.7; }
+  to { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
 }
 
 .couple{
   width: clamp(200px, 38vw, 320px);
   height: auto;
-  margin-bottom: var(--space-3);
-  opacity: 0;
   filter: drop-shadow(0 18px 34px rgba(75,26,41,0.22));
-  animation: couple-in 1s var(--ease-bloom) forwards;
-  animation-delay: 0.5s;
 }
-
+  
 @keyframes couple-in{
   from{ opacity: 0; transform: scale(0.92) translateY(16px); }
   to{ opacity: 1; transform: scale(1) translateY(0); }
@@ -252,11 +285,19 @@ section{ position: relative; width: 100%; }
 }
 
 .landing__names{
-  font-size: clamp(0.95rem, 0.88rem + 0.3vw, 1.1rem); letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--ink-soft); margin: 0;
-  opacity: 0; animation: rise 0.9s var(--ease-soft) forwards; animation-delay: 1.45s;
+  font-size: clamp(1.2rem, 1.1rem + 0.5vw, 1.5rem); 
+  letter-spacing: 0.1em;
+  text-transform: uppercase; 
+  color: var(--ink-soft); 
+  margin: 0;
+  line-height: 1.5;
+  opacity: 0; 
+  animation: rise 0.9s var(--ease-soft) forwards; 
+  animation-delay: 1.45s;
 }
-.landing__names strong{ color: var(--wine); font-weight: 600; letter-spacing: 0.05em; }
+.landing__names strong{ color: var(--wine-deep); font-family: var(--font-display); font-weight: 600; letter-spacing: 0.08em; }
+.landing__amp { color: var(--gold); font-family: var(--font-display); font-style: italic; font-size: 1.2em; }
+.landing__sub { font-size: 0.65em; letter-spacing: 0.25em; color: var(--ink-soft); font-weight: 400;}
 
 .scroll-cue{
   position: absolute; 
@@ -297,31 +338,61 @@ section{ position: relative; width: 100%; }
   100% { transform: translateY(0); opacity: 0; }
 }
 
-/* ================= Hero ================= */
+/* ================= Hero Arch Card ================= */
 .hero{
-  min-height: 100svh;
+  /* REMOVED: position: sticky; and min-height: 100svh; */
+  /* This ensures the card naturally scrolls and doesn't get clipped or overlapped */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: var(--space-4) var(--space-2) var(--space-3);
-  position: sticky;
-  top: 0;
+  padding: calc(var(--space-4) * 1.5) var(--space-2);
+  position: relative;
   z-index: 2; 
   background: radial-gradient(70% 60% at 50% 0%, rgba(255,255,255,0.9), transparent 70%), var(--bg);
-  box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.08);
-  border-top: 1px solid rgba(255,255,255,0.4);
 }
-.hero__inner{ max-width: 40rem; display: flex; flex-direction: column; align-items: center; }
+
+.hero__card {
+  background: var(--bg);
+  /* Dynamic Border Radius prevents stretching on thin mobile screens */
+  border-radius: 45vw 45vw 24px 24px;
+  padding: calc(var(--space-4) * 1.5) var(--space-3) var(--space-4);
+  border: 1px solid var(--gold-soft);
+  box-shadow: inset 0 0 0 8px var(--surface), 0 20px 50px rgba(75,26,41,0.12);
+  max-width: 480px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+@media (min-width: 480px) {
+  .hero__card {
+    border-radius: 200px 200px 24px 24px;
+  }
+}
+
+.hero__card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 50%;
+  background: radial-gradient(circle at top center, rgba(181, 137, 63, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
 
 .hero__eyebrow{
   font-size: 0.75rem; font-weight: 500; letter-spacing: 0.35em; text-transform: uppercase;
   color: var(--ink-soft); margin: 0 0 var(--space-2);
+  position: relative; z-index: 2;
 }
 .hero__names{
   display: flex; align-items: center; justify-content: center;
   gap: clamp(0.5rem, 1vw, 1.25rem); flex-wrap: wrap; margin: 0;
+  position: relative; z-index: 2;
 }
 .hero__name{
   font-family: var(--font-display); font-weight: 500;
@@ -330,17 +401,43 @@ section{ position: relative; width: 100%; }
 }
 .hero__amp{
   font-family: var(--font-display); font-style: italic; font-weight: 500;
-  font-size: clamp(1.75rem, 1.4rem + 1.5vw, 2.75rem); color: var(--gold);
+  font-size: clamp(2.2rem, 1.8rem + 2vw, 3.5rem); color: var(--gold);
 }
 .hero__tagline{
   font-weight: 400; font-size: clamp(0.85rem, 0.78rem + 0.3vw, 1.1rem);
   letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft);
   margin: var(--space-3) 0 var(--space-2);
+  position: relative; z-index: 2;
 }
-.divider-motif{ width: clamp(160px, 25vw, 260px); height: auto; color: var(--gold); margin: var(--space-2) 0; }
+
+.divider-motif{ 
+  width: clamp(160px, 25vw, 260px); 
+  height: auto; color: var(--gold); 
+  margin: var(--space-2) 0; 
+  position: relative; z-index: 2;
+}
+
+.hero.is-visible .draw-line {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: draw-svg-line 2.5s ease-out forwards 0.4s;
+}
+.hero.is-visible .fade-shape {
+  opacity: 0;
+  animation: fade-svg-shape 1s ease forwards 1.5s;
+}
+
+@keyframes draw-svg-line {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes fade-svg-shape {
+  to { opacity: 1; }
+}
+
 .hero__details{
   font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.25rem); color: var(--ink);
   line-height: 1.7; margin: 0;
+  position: relative; z-index: 2;
 }
 .hero__details strong{ color: var(--wine); font-weight: 600; }
 
@@ -410,17 +507,14 @@ section{ position: relative; width: 100%; }
   flex: 0 0 calc(50vw - (clamp(280px, 75vw, 360px) / 2));
 }
 
-/* ====== NEW ARCH CARD DESIGN ====== */
+/* Event Cards */
 .event-card {
   flex: 0 0 clamp(280px, 75vw, 360px); 
   scroll-snap-align: center;
   scroll-snap-stop: always;
   background: var(--surface);
   
-  /* Traditional Arch Window Shape */
   border-radius: 180px 180px 24px 24px;
-  
-  /* The double-border effect */
   border: 1px solid var(--gold-soft);
   box-shadow: inset 0 0 0 6px var(--surface), 0 4px 10px rgba(0,0,0,0.05);
   
@@ -496,7 +590,6 @@ section{ position: relative; width: 100%; }
   50% { transform: rotate(-12deg); }
 }
 
-/* Assigning keyframes to SVG elements ONLY when the card is focused */
 .event-card.is-focused .anim-splash-1 { animation: splash-up 1.5s infinite ease-in-out; }
 .event-card.is-focused .anim-splash-2 { animation: splash-up 1.5s infinite ease-in-out 0.5s; }
 .event-card.is-focused .anim-splash-3 { animation: splash-up 1.5s infinite ease-in-out 1s; }

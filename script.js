@@ -1,4 +1,4 @@
-// 1. SPLASH SCREEN & AUDIO CONTROLLER
+// 1. SMART AUDIO CONTROLLER (Forces Tap to Enter)
 (function initLoaderAndAudio() {
   const loader = document.getElementById('introLoader');
   const audio = document.getElementById('weddingAudio');
@@ -12,28 +12,26 @@
       loader.classList.add('is-hidden');
     }
 
-    audio.play().catch(() => {
-      console.log("Waiting for touch interaction on mobile.");
+    // Audio plays instantly because the user gave a physical "tap" gesture
+    audio.play().catch((err) => {
+      console.log("Audio blocked: ", err);
     });
 
     startPetals();
   }
 
-  const autoTimer = setTimeout(dismissAndPlay, 2400);
-
+  // The envelope waits for the user to tap it. No auto-dismiss!
   if (loader) {
-    loader.addEventListener('click', () => {
-      clearTimeout(autoTimer);
-      dismissAndPlay();
-    });
+    loader.addEventListener('click', dismissAndPlay);
   }
 
+  // Fallbacks just in case the loader isn't present
   document.addEventListener('click', dismissAndPlay, { once: true });
   document.addEventListener('scroll', dismissAndPlay, { once: true, passive: true });
   document.addEventListener('touchstart', dismissAndPlay, { once: true, passive: true });
 })();
 
-// 2. Delayed Petal Generation
+// 2. Petal Generation
 function startPetals() {
   const container = document.getElementById('petalCanvas');
   if (!container || container.children.length > 0) return;
@@ -73,10 +71,10 @@ function startPetals() {
   targets.forEach(function(t){ io.observe(t); });
 })();
 
-// 4. Smart Continuous Auto-Scroll, iOS Drift Fix & Dynamic Background Lighting
+// 4. Smart Continuous Auto-Scroll & Dynamic Background
 (function(){
   const carouselContainer = document.getElementById('eventCarousel');
-  const eventsSection = document.getElementById('eventsSection'); // Target for Mood Lighting
+  const eventsSection = document.getElementById('eventsSection'); 
   const cards = document.querySelectorAll('.event-card');
   const swipeHint = document.getElementById('swipeHint');
   
@@ -161,7 +159,6 @@ function startPetals() {
       if (entry.isIntersecting) {
         entry.target.classList.add('is-focused');
         
-        // Dynamically change background color based on the focused card
         if (eventsSection) {
           const newColor = entry.target.getAttribute('data-bg-color');
           if (newColor) {

@@ -8,22 +8,20 @@
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,500&family=Jost:wght@300;400;500;600&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,500&family=Jost:wght@300;400;500;600&family=Noto+Serif+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <!-- External CSS -->
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- ============ ROYAL OPENING / PRE-LOADER SCREEN ============ -->
-  <div class="intro-loader" id="introLoader" title="Tap to open invitation">
+  <!-- ============ TAP TO OPEN ENVELOPE (Guarantees Audio Playback) ============ -->
+  <div class="intro-loader" id="introLoader">
     <div class="loader-content">
       <p class="loader-blessing">॥ श्री शिवाय नमस्तुभ्यं ॥</p>
       <h2 class="loader-monogram">S <span>&amp;</span> T</h2>
       <p class="loader-tagline">Wedding Invitation</p>
-      <div class="loader-bar-wrap">
-        <div class="loader-bar"></div>
-      </div>
+      <div class="loader-tap-pulse">Tap to Open</div>
     </div>
   </div>
 
@@ -42,10 +40,14 @@
     
     <p class="landing__blessing">॥ श्री शिवाय नमस्तुभ्यं ॥</p>
     
-    <img class="couple" src="./assets/img/ggg.gif" alt="Illustration of Shubham and Tanya standing together" loading="eager">
+    <div class="landing__couple-wrap">
+      <img class="couple" src="./assets/img/ggg.gif" alt="Illustration of Shubham and Tanya standing together" loading="eager">
+    </div>
+
     <p class="landing__eyebrow">Save the Date</p>
     <p class="landing__date">30 · 11 · 2026</p>
-    <p class="landing__names"><strong>Shubham</strong> &amp; <strong>Tanya</strong> are getting married</p>
+    <p class="landing__names"><strong>Shubham</strong> <span class="landing__amp">&amp;</span> <strong>Tanya</strong> <br><span class="landing__sub">are getting married</span></p>
+
     <div class="scroll-cue">
       <span class="scroll-text">Scroll Down</span>
       <svg viewBox="0 0 14 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -55,22 +57,24 @@
     </div>
   </section>
 
-  <!-- ============ HERO ============ -->
+  <!-- ============ HERO ARCH CARD ============ -->
   <section class="hero reveal">
-    <div class="hero__inner">
+    <div class="hero__card">
       <p class="hero__eyebrow">Together with their families</p>
       <div class="hero__names">
         <h1 class="hero__name">Shubham</h1>
         <span class="hero__amp" aria-hidden="true">&amp;</span>
         <h1 class="hero__name">Tanya</h1>
       </div>
-      <p class="hero__tagline">are getting married</p>
+      <p class="hero__tagline">Request the honor of your presence</p>
+      
       <svg class="divider-motif" viewBox="0 0 220 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M2 20C40 4 80 4 110 20C140 36 180 36 218 20" stroke="currentColor" stroke-width="1.1"/>
-        <path d="M100 20C103 14 109 11 115 13C111 17 112 22 116 25C109 26 103 24 100 20Z" fill="currentColor"/>
-        <path d="M120 20C123 14 129 11 135 13C131 17 132 22 136 25C129 26 123 24 120 20Z" fill="currentColor" transform="scale(-1,1) translate(-255,0)"/>
-        <circle cx="110" cy="20" r="2.5" fill="currentColor"/>
+        <path class="draw-line" d="M2 20C40 4 80 4 110 20C140 36 180 36 218 20" stroke="currentColor" stroke-width="1.2"/>
+        <path class="fade-shape" d="M100 20C103 14 109 11 115 13C111 17 112 22 116 25C109 26 103 24 100 20Z" fill="currentColor"/>
+        <path class="fade-shape" d="M120 20C123 14 129 11 135 13C131 17 132 22 136 25C129 26 123 24 120 20Z" fill="currentColor" transform="scale(-1,1) translate(-255,0)"/>
+        <circle class="fade-shape" cx="110" cy="20" r="2.5" fill="currentColor"/>
       </svg>
+
       <p class="hero__details">
         on <strong>Monday, 30th November 2026</strong><br>
         at <strong>Enrise by Sayaji</strong>, Amravati, Maharashtra
@@ -86,7 +90,6 @@
 
     <div class="carousel" id="eventCarousel">
       
-      <!-- Haldi: Warm Marigold Lighting -->
       <article class="event-card" data-bg-color="#FFF8E3">
         <svg class="event-card__illustration" viewBox="0 0 100 100">
           <circle cx="50" cy="50" r="45" fill="#FEF5E7"/>
@@ -102,7 +105,6 @@
         <p class="event-card__date">29th November</p>
       </article>
 
-      <!-- Sangeet: Twilight Purple Lighting -->
       <article class="event-card" data-bg-color="#F5EEF8">
         <svg class="event-card__illustration" viewBox="0 0 100 100">
           <circle cx="50" cy="50" r="45" fill="#F4ECF7"/>
@@ -128,7 +130,6 @@
         <p class="event-card__date">29th November</p>
       </article>
 
-      <!-- Baarat: Sunset Orange Lighting -->
       <article class="event-card" data-bg-color="#FFF2EA">
         <svg class="event-card__illustration" viewBox="0 0 100 100">
           <circle cx="50" cy="50" r="45" fill="#FDEDEC"/>
@@ -154,7 +155,6 @@
         <p class="event-card__date">30th November</p>
       </article>
 
-      <!-- Reception: Champagne Gold Lighting -->
       <article class="event-card" data-bg-color="#FBF7EE">
         <svg class="event-card__illustration" viewBox="0 0 100 100">
           <circle cx="50" cy="50" r="45" fill="#FCF3CF"/>
