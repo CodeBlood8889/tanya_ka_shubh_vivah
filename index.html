@@ -121,7 +121,8 @@
 
   /* ================= Landing ================= */
   .landing{
-    min-height: 100vh;
+    /* Using SVH so it doesn't get pushed off-screen by mobile toolbars */
+    min-height: 100svh; 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -183,7 +184,8 @@
 
   .scroll-cue{
     position: absolute; 
-    bottom: var(--space-4); 
+    /* Safely positioned above the bottom edge */
+    bottom: clamp(1.5rem, 6svh, 3rem); 
     left: 50%;
     transform: translateX(-50%); 
     display: flex; 
@@ -222,7 +224,7 @@
 
   /* ================= Hero ================= */
   .hero{
-    min-height: 100vh;
+    min-height: 100svh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -269,7 +271,7 @@
 
   /* ================= Interactive Horizontal Carousel ================= */
   .events{ 
-    min-height: 100vh;
+    min-height: 100svh;
     padding: var(--space-4) 0; 
     display: flex;
     flex-direction: column;
@@ -377,7 +379,6 @@
     text-align: center;
   }
 
-  /* Subtle golden dividing line */
   .footer-signoff::before {
     content: '';
     position: absolute;
@@ -400,10 +401,10 @@
 
   .footer-signoff__family {
     font-family: var(--font-display);
-    font-style: italic; /* Adds a signature/cursive elegance */
+    font-style: italic; 
     color: var(--wine-deep);
     font-size: clamp(1.8rem, 1.5rem + 1.5vw, 2.8rem);
-    font-weight: 300; /* Lighter weight for a more delicate look */
+    font-weight: 300; 
     margin: 0;
     letter-spacing: 0.05em;
   }
@@ -412,7 +413,7 @@
 </head>
 <body>
 
-  <!-- Audio Element (Updated Path) -->
+  <!-- Audio Element -->
   <audio id="weddingAudio" loop>
     <source src="assets/mp3/asd.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
@@ -515,7 +516,7 @@
     <!-- Enhanced Elegant Footer Sign-Off -->
     <div class="footer-signoff reveal">
       <p class="footer-signoff__vineet">विनीत</p>
-      <p class="footer-signoff__family">Rajesh Baniya &amp; Family</p>
+      <p class="footer-signoff__family">Rajesh Baniya <br/>&amp;<br/> Family</p>
     </div>
 
   </section>
@@ -589,7 +590,7 @@
       targets.forEach(function(t){ io.observe(t); });
     })();
 
-    // 4. Smart Continuous Auto-Scroll with Idle Resume
+    // 4. Smart Continuous Auto-Scroll with iOS Drift Fix
     (function(){
       const carouselContainer = document.getElementById('eventCarousel');
       const cards = document.querySelectorAll('.event-card');
@@ -598,7 +599,7 @@
       if(!carouselContainer || !cards.length) return;
 
       let isAutoScrolling = false; 
-      let autoScrollSpeed = 0.6; 
+      let autoScrollSpeed = 1; // Integer value forces iOS to actually render the scroll
       let animationFrameId;
       let resumeTimeout;
 
@@ -607,7 +608,7 @@
         
         carouselContainer.scrollLeft += autoScrollSpeed;
 
-        if (carouselContainer.scrollLeft >= (carouselContainer.scrollWidth - carouselContainer.clientWidth - 1)) {
+        if (carouselContainer.scrollLeft >= (carouselContainer.scrollWidth - carouselContainer.clientWidth - 2)) {
            isAutoScrolling = false;
            return;
         }
@@ -642,7 +643,7 @@
       function queueResume() {
         clearTimeout(resumeTimeout);
         resumeTimeout = setTimeout(() => {
-          if (carouselContainer.scrollLeft < (carouselContainer.scrollWidth - carouselContainer.clientWidth - 1)) {
+          if (carouselContainer.scrollLeft < (carouselContainer.scrollWidth - carouselContainer.clientWidth - 2)) {
             isAutoScrolling = true;
             carouselContainer.classList.remove('is-manual'); 
             runAutoScroll();
