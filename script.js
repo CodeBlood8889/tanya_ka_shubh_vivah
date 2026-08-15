@@ -1,10 +1,10 @@
-// 1. SMART AUDIO CONTROLLER (Forces Tap to Enter)
+// 1. SMART AUDIO CONTROLLER (Bulletproof Android & iOS Fix)
 (function initLoaderAndAudio() {
   const loader = document.getElementById('introLoader');
   const audio = document.getElementById('weddingAudio');
   let isUnlocked = false;
 
-  function dismissAndPlay() {
+  function dismissAndPlay(e) {
     if (isUnlocked) return;
     isUnlocked = true;
 
@@ -12,23 +12,32 @@
       loader.classList.add('is-hidden');
     }
 
-    // Audio plays instantly because the user gave a physical "tap" gesture
-    audio.play().catch((err) => {
-      console.log("Audio blocked: ", err);
-    });
+    // ANDROID FIX: Force the browser to load the audio buffer into memory RIGHT NOW
+    audio.volume = 1;
+    audio.load(); 
+    
+    // Play the audio and catch any stubborn browser blocks
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(error => {
+        console.log("Audio blocked by browser, attaching fallback:", error);
+        // Extreme fallback: If it still fails, the very next time they touch the screen anywhere, it will play.
+        document.addEventListener('touchstart', () => { audio.play(); }, { once: true });
+      });
+    }
 
     startPetals();
   }
 
-  // The envelope waits for the user to tap it. No auto-dismiss!
+  // Bind to BOTH click and touchend. Android deeply respects 'touchend' as a physical gesture.
   if (loader) {
+    loader.addEventListener('touchend', dismissAndPlay); 
     loader.addEventListener('click', dismissAndPlay);
   }
 
-  // Fallbacks just in case the loader isn't present
+  // Global fallbacks just in case the loader isn't present
   document.addEventListener('click', dismissAndPlay, { once: true });
-  document.addEventListener('scroll', dismissAndPlay, { once: true, passive: true });
-  document.addEventListener('touchstart', dismissAndPlay, { once: true, passive: true });
+  document.addEventListener('touchend', dismissAndPlay, { once: true, passive: true });
 })();
 
 // 2. Petal Generation
