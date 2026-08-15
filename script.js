@@ -8,24 +8,19 @@
     if (isUnlocked) return;
     isUnlocked = true;
 
-    // Smoothly fade out loader
     if (loader) {
       loader.classList.add('is-hidden');
     }
 
-    // Play audio immediately (file is already preloaded during the 2.4s screen)
     audio.play().catch(() => {
       console.log("Waiting for touch interaction on mobile.");
     });
 
-    // Trigger the ambient petals
     startPetals();
   }
 
-  // Automatically dismiss after 2.4 seconds
   const autoTimer = setTimeout(dismissAndPlay, 2400);
 
-  // Or instantly unlock upon user tap/click
   if (loader) {
     loader.addEventListener('click', () => {
       clearTimeout(autoTimer);
@@ -33,13 +28,12 @@
     });
   }
 
-  // Mobile fallbacks
   document.addEventListener('click', dismissAndPlay, { once: true });
   document.addEventListener('scroll', dismissAndPlay, { once: true, passive: true });
   document.addEventListener('touchstart', dismissAndPlay, { once: true, passive: true });
 })();
 
-// 2. Delayed Petal Generation (Triggered after loader)
+// 2. Delayed Petal Generation
 function startPetals() {
   const container = document.getElementById('petalCanvas');
   if (!container || container.children.length > 0) return;
@@ -79,9 +73,10 @@ function startPetals() {
   targets.forEach(function(t){ io.observe(t); });
 })();
 
-// 4. Smart Continuous Auto-Scroll with iOS Drift Fix
+// 4. Smart Continuous Auto-Scroll, iOS Drift Fix & Dynamic Background Lighting
 (function(){
   const carouselContainer = document.getElementById('eventCarousel');
+  const eventsSection = document.getElementById('eventsSection'); // Target for Mood Lighting
   const cards = document.querySelectorAll('.event-card');
   const swipeHint = document.getElementById('swipeHint');
   
@@ -160,10 +155,19 @@ function startPetals() {
     cards.forEach(card => card.classList.add('is-focused'));
     return;
   }
+  
   const carouselObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('is-focused');
+        
+        // Dynamically change background color based on the focused card
+        if (eventsSection) {
+          const newColor = entry.target.getAttribute('data-bg-color');
+          if (newColor) {
+            eventsSection.style.backgroundColor = newColor;
+          }
+        }
       } else {
         entry.target.classList.remove('is-focused');
       }
