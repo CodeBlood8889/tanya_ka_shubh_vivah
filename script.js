@@ -177,3 +177,51 @@ function startPetals() {
 
   cards.forEach(card => carouselObserver.observe(card));
 })();
+
+// 5. RSVP FORM SUBMISSION TO GOOGLE SHEETS
+(function initRSVP() {
+  // PASTE YOUR GOOGLE WEB APP URL HERE
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbzS6wicYnTgnOOFgOkIuovFL11GRwcs5NO4coQtDFTLgymhT1QUjMfJ2MVP6EC9_h0v/exec';
+  
+  const form = document.getElementById('rsvpForm');
+  const btn = document.getElementById('rsvpBtn');
+
+  if (!form) return;
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    
+    // Change button state to show loading
+    const originalText = btn.innerText;
+    btn.innerText = 'Sending...';
+    btn.disabled = true;
+    btn.style.opacity = '0.8';
+
+    // Send data to Google Sheets
+    fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+      .then(response => {
+        // Success State
+        btn.innerText = 'RSVP Sent Beautifully! ✨';
+        btn.style.background = '#2B231F'; // Dark ink color for success
+        btn.style.color = '#B5893F'; // Gold text
+        form.reset();
+        
+        // Reset button after 4 seconds so they can submit another if needed
+        setTimeout(() => {
+          btn.innerText = originalText;
+          btn.disabled = false;
+          btn.style.background = ''; 
+          btn.style.color = '';
+          btn.style.opacity = '1';
+        }, 4000);
+      })
+      .catch(error => {
+        // Error State
+        console.error('Error!', error.message);
+        btn.innerText = 'Error. Please try again.';
+        btn.style.background = 'red';
+        btn.disabled = false;
+        btn.style.opacity = '1';
+      });
+  });
+})();

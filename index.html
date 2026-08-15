@@ -15,7 +15,7 @@
 </head>
 <body>
 
-  <!-- ============ TAP TO OPEN ENVELOPE (Guarantees Audio Playback) ============ -->
+  <!-- ============ TAP TO OPEN ENVELOPE ============ -->
   <div class="intro-loader" id="introLoader">
     <div class="loader-content">
       <p class="loader-blessing">॥ श्री शिवाय नमस्तुभ्यं ॥</p>
@@ -25,7 +25,7 @@
     </div>
   </div>
 
-  <!-- Audio Element (Reverted to Local for Mobile Safari Compatibility) -->
+  <!-- Audio Element -->
   <audio id="weddingAudio" loop preload="auto" playsinline>
     <source src="assets/mp3/asd.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
@@ -82,7 +82,41 @@
     </div>
   </section>
 
-  <!-- ============ EVENTS (JS Auto-Scrolling Carousel) ============ -->
+  <!-- ============ MEMORIES / POLAROIDS ============ -->
+  <section class="memories reveal" id="memoriesSection">
+    <div class="memories__inner">
+      <p class="memories__eyebrow">A glimpse of us</p>
+      <h2 class="memories__title">Our Favorite Moments</h2>
+      
+      <div class="polaroid-scatter">
+        <!-- Polaroid 1 -->
+        <div class="polaroid p-1">
+          <div class="polaroid__img-wrap">
+             <img src="assets/img/photo1.jpg" alt="Shubham and Tanya" onerror="this.src='https://images.unsplash.com/photo-1583939003579-730e3918a45a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'">
+          </div>
+          <p class="polaroid__caption">Where it all began</p>
+        </div>
+        
+        <!-- Polaroid 2 -->
+        <div class="polaroid p-2">
+          <div class="polaroid__img-wrap">
+             <img src="assets/img/photo2.jpg" alt="Shubham and Tanya" onerror="this.src='https://images.unsplash.com/photo-1606800052052-a08af7148866?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'">
+          </div>
+          <p class="polaroid__caption">Yes. A million times yes.</p>
+        </div>
+
+        <!-- Polaroid 3 -->
+        <div class="polaroid p-3">
+          <div class="polaroid__img-wrap">
+             <img src="assets/img/photo3.jpg" alt="Shubham and Tanya" onerror="this.src='https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'">
+          </div>
+          <p class="polaroid__caption">Forever to go</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EVENTS CAROUSEL ============ -->
   <section class="events reveal" id="eventsSection">
     <p class="events__eyebrow">The Celebrations</p>
     <h2 class="events__title">Wedding Festivities</h2>
@@ -182,23 +216,103 @@
       </article>
 
     </div>
-
-    <!-- Enhanced Aesthetic Footer Sign-Off -->
-    <div class="footer-signoff reveal">
-      <div class="footer-signoff__ornament">
-        <span></span>
-        <i>✦</i>
-        <span></span>
-      </div>
-      <p class="footer-signoff__vineet">विनीत</p>
-      <p class="footer-signoff__family">
-        <span>Rajesh Baniya</span>
-        <span class="amp">&amp;</span>
-        <span>Family</span>
-      </p>
-    </div>
-
   </section>
+
+  <!-- ============ VENUE & TRAVEL ============ -->
+  <section class="venue reveal" id="venueSection">
+    <div class="venue__inner">
+      <p class="venue__eyebrow">Where the magic happens</p>
+      <h2 class="venue__title">The Venue</h2>
+
+      <div class="venue__card">
+        <div class="venue__image-placeholder">
+          <svg viewBox="0 0 200 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="40" cy="50" r="1.5" fill="var(--gold)" class="anim-star-1" />
+            <circle cx="160" cy="80" r="2" fill="var(--gold)" class="anim-star-2" />
+            <circle cx="140" cy="30" r="1" fill="var(--gold)" class="anim-star-3" />
+            <path d="M -20 180 Q 50 160 100 190 T 220 170" stroke="rgba(181, 137, 63, 0.3)" stroke-width="1.5" stroke-dasharray="4 4" />
+            <path d="M -20 200 Q 60 220 120 180 T 220 190" stroke="rgba(181, 137, 63, 0.2)" stroke-width="1.5" stroke-dasharray="4 4" />
+            <path d="M -20 220 Q 80 190 140 220 T 220 210" stroke="rgba(181, 137, 63, 0.1)" stroke-width="1.5" stroke-dasharray="4 4" />
+            <circle class="anim-radar-1" cx="100" cy="140" r="0" fill="none" stroke="var(--gold)" stroke-width="2" />
+            <circle class="anim-radar-2" cx="100" cy="140" r="0" fill="none" stroke="var(--gold)" stroke-width="2" />
+            <path class="anim-route-line" d="M 20 240 C 30 200, 70 190, 100 140" stroke="var(--surface)" stroke-width="3" stroke-linecap="round" fill="none" stroke-dasharray="150" stroke-dashoffset="150"/>
+            <g class="anim-map-pin">
+              <ellipse cx="100" cy="140" rx="15" ry="4" fill="rgba(0,0,0,0.3)" class="anim-pin-shadow" />
+              <g transform="translate(0, -10)">
+                <path d="M 100 140 Q 125 105 125 85 A 25 25 0 0 0 75 85 Q 75 105 100 140 Z" fill="var(--gold)" />
+                <circle cx="100" cy="85" r="10" fill="var(--wine-deep)" />
+                <circle cx="100" cy="85" r="4" fill="var(--surface)" />
+              </g>
+            </g>
+          </svg>
+        </div>
+
+        <h3 class="venue__name">Enrise by Sayaji</h3>
+        <p class="venue__address">
+          Murtizapur Road, near Highway,<br>
+          Amravati, Maharashtra 444605
+        </p>
+
+        <a href="https://maps.app.goo.gl/YourMapLinkHere" target="_blank" class="venue__btn">
+          Get Directions
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RSVP SECTION ============ -->
+  <section class="rsvp reveal" id="rsvpSection">
+    <div class="rsvp__inner">
+      <p class="rsvp__eyebrow">We can't wait</p>
+      <h2 class="rsvp__title">RSVP</h2>
+      
+      <div class="rsvp__card">
+        <form class="rsvp__form" id="rsvpForm">
+          
+          <div class="input-group">
+            <label for="guestName">Your Full Name</label>
+            <input type="text" id="guestName" name="guestName" placeholder="E.g. Shri Rajesh Baniya" required>
+          </div>
+
+          <div class="input-group">
+            <label for="attendance">Will you be attending?</label>
+            <div class="custom-select-wrap">
+              <select id="attendance" name="attendance" required>
+                <option value="" disabled selected>Please select...</option>
+                <option value="Joyfully Accept">Joyfully Accept</option>
+                <option value="Regretfully Decline">Regretfully Decline</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="guestCount">Number of Guests</label>
+            <input type="number" id="guestCount" name="guestCount" min="1" max="10" placeholder="1" required>
+          </div>
+
+          <button type="submit" class="rsvp__btn" id="rsvpBtn">Send RSVP</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enhanced Aesthetic Footer Sign-Off -->
+  <div class="footer-signoff reveal">
+    <div class="footer-signoff__ornament">
+      <span></span>
+      <i>✦</i>
+      <span></span>
+    </div>
+    <p class="footer-signoff__vineet">Cordially inviting</p>
+    <p class="footer-signoff__family">
+      <span>Rajesh Baniya</span>
+      <span class="amp">&amp;</span>
+      <span>Family</span>
+    </p>
+  </div>
 
   <!-- External JS -->
   <script src="script.js"></script>
