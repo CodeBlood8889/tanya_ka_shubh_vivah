@@ -1,3 +1,9 @@
+// FORCES THE BROWSER TO RESET TO THE TOP ON EVERY SINGLE PAGE REFRESH
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+
 // 1. SMART AUDIO CONTROLLER (Bulletproof Android & iOS Fix)
 (function initLoaderAndAudio() {
   const loader = document.getElementById('introLoader');
@@ -12,16 +18,13 @@
       loader.classList.add('is-hidden');
     }
 
-    // ANDROID FIX: Force the browser to load the audio buffer into memory RIGHT NOW
     audio.volume = 1;
     audio.load(); 
     
-    // Play the audio and catch any stubborn browser blocks
     const playPromise = audio.play();
     if (playPromise !== undefined) {
       playPromise.catch(error => {
         console.log("Audio blocked by browser, attaching fallback:", error);
-        // Extreme fallback: If it still fails, the very next time they touch the screen anywhere, it will play.
         document.addEventListener('touchstart', () => { audio.play(); }, { once: true });
       });
     }
@@ -29,13 +32,11 @@
     startPetals();
   }
 
-  // Bind to BOTH click and touchend. Android deeply respects 'touchend' as a physical gesture.
   if (loader) {
     loader.addEventListener('touchend', dismissAndPlay); 
     loader.addEventListener('click', dismissAndPlay);
   }
 
-  // Global fallbacks just in case the loader isn't present
   document.addEventListener('click', dismissAndPlay, { once: true });
   document.addEventListener('touchend', dismissAndPlay, { once: true, passive: true });
 })();
@@ -80,28 +81,49 @@ function startPetals() {
   targets.forEach(function(t){ io.observe(t); });
 })();
 
-// 4. Smart Continuous Auto-Scroll & Dynamic Background
+// 4. INFINITE SCROLL CAROUSEL & DYNAMIC BACKGROUND
 (function(){
   const carouselContainer = document.getElementById('eventCarousel');
   const eventsSection = document.getElementById('eventsSection'); 
-  const cards = document.querySelectorAll('.event-card');
+  if(!carouselContainer) return;
+
+  const originalCards = Array.from(carouselContainer.querySelectorAll('.event-card'));
   const swipeHint = document.getElementById('swipeHint');
   
-  if(!carouselContainer || !cards.length) return;
+  if(!originalCards.length) return;
 
+  // Clone the cards so it creates a seamless infinite loop
+  originalCards.forEach(card => {
+    const clone = card.cloneNode(true);
+    carouselContainer.appendChild(clone);
+  });
+
+  const allCards = document.querySelectorAll('.event-card');
   let isAutoScrolling = false; 
   let autoScrollSpeed = 1; 
   let animationFrameId;
   let resumeTimeout;
+  let totalOriginalWidth = 0;
+
+  // Calculates the exact pixel width to snap back seamlessly
+  function calculateWidth() {
+    const firstCard = originalCards[0];
+    const style = window.getComputedStyle(carouselContainer);
+    const gap = parseFloat(style.gap) || 0;
+    totalOriginalWidth = (firstCard.offsetWidth + gap) * originalCards.length;
+  }
+  
+  calculateWidth();
+  window.addEventListener('resize', calculateWidth);
 
   function runAutoScroll() {
     if (!isAutoScrolling) return;
     
     carouselContainer.scrollLeft += autoScrollSpeed;
 
-    if (carouselContainer.scrollLeft >= (carouselContainer.scrollWidth - carouselContainer.clientWidth - 2)) {
-       isAutoScrolling = false;
-       return;
+    // The Magic Infinite Loop Snap
+    if (carouselContainer.scrollLeft >= totalOriginalWidth) {
+       carouselContainer.scrollLeft -= totalOriginalWidth;
     }
 
     animationFrameId = requestAnimationFrame(runAutoScroll);
@@ -109,10 +131,11 @@ function startPetals() {
 
   const sectionObserver = new IntersectionObserver((entries) => {
     if (entries[0].isIntersecting && !isAutoScrolling) {
+      // Adjusted delay: Waits exactly 2 seconds before the drift begins
       setTimeout(() => {
           isAutoScrolling = true;
           runAutoScroll();
-      }, 1000);
+      }, 2000);
       sectionObserver.disconnect();
     }
   }, { threshold: 0.3 });
@@ -121,7 +144,6 @@ function startPetals() {
   function pauseForManual() {
     isAutoScrolling = false;
     cancelAnimationFrame(animationFrameId);
-    
     carouselContainer.classList.add('is-manual');
     
     if(swipeHint) {
@@ -134,11 +156,9 @@ function startPetals() {
   function queueResume() {
     clearTimeout(resumeTimeout);
     resumeTimeout = setTimeout(() => {
-      if (carouselContainer.scrollLeft < (carouselContainer.scrollWidth - carouselContainer.clientWidth - 2)) {
         isAutoScrolling = true;
         carouselContainer.classList.remove('is-manual'); 
         runAutoScroll();
-      }
     }, 2000); 
   }
 
@@ -159,7 +179,7 @@ function startPetals() {
   }, { passive: true });
 
   if(!('IntersectionObserver' in window)) {
-    cards.forEach(card => card.classList.add('is-focused'));
+    allCards.forEach(card => card.classList.add('is-focused'));
     return;
   }
   
@@ -184,12 +204,11 @@ function startPetals() {
     threshold: 0.1
   });
 
-  cards.forEach(card => carouselObserver.observe(card));
+  allCards.forEach(card => carouselObserver.observe(card));
 })();
 
 // 5. RSVP FORM SUBMISSION TO GOOGLE SHEETS
 (function initRSVP() {
-  // PASTE YOUR GOOGLE WEB APP URL HERE
   const scriptURL = 'https://script.google.com/macros/s/AKfycbzS6wicYnTgnOOFgOkIuovFL11GRwcs5NO4coQtDFTLgymhT1QUjMfJ2MVP6EC9_h0v/exec';
   
   const form = document.getElementById('rsvpForm');
@@ -200,22 +219,18 @@ function startPetals() {
   form.addEventListener('submit', e => {
     e.preventDefault();
     
-    // Change button state to show loading
     const originalText = btn.innerText;
     btn.innerText = 'Sending...';
     btn.disabled = true;
     btn.style.opacity = '0.8';
 
-    // Send data to Google Sheets
     fetch(scriptURL, { method: 'POST', body: new FormData(form) })
       .then(response => {
-        // Success State
         btn.innerText = 'RSVP Sent Beautifully! ✨';
-        btn.style.background = '#2B231F'; // Dark ink color for success
-        btn.style.color = '#B5893F'; // Gold text
+        btn.style.background = '#2B231F'; 
+        btn.style.color = '#B5893F'; 
         form.reset();
         
-        // Reset button after 4 seconds so they can submit another if needed
         setTimeout(() => {
           btn.innerText = originalText;
           btn.disabled = false;
@@ -225,7 +240,6 @@ function startPetals() {
         }, 4000);
       })
       .catch(error => {
-        // Error State
         console.error('Error!', error.message);
         btn.innerText = 'Error. Please try again.';
         btn.style.background = 'red';

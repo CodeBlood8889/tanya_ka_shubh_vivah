@@ -27,7 +27,9 @@
 html{
   scroll-behavior: smooth;
   scrollbar-width: none;       
-  -ms-overflow-style: none;    
+  -ms-overflow-style: none;
+  /* SAFE LOCK SCROLLING: Forces a steady, slideshow-like pace */
+  scroll-snap-type: y mandatory;    
 }
 html::-webkit-scrollbar{ display: none; } 
 
@@ -38,6 +40,12 @@ body{
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+}
+
+/* Forces the browser to snap perfectly to the top of every section */
+section, .footer-signoff {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 /* ================= TAP TO OPEN ENVELOPE ================= */
@@ -240,7 +248,7 @@ section{ position: relative; width: 100%; }
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  width: 180%; height: 180%;
+  width: 180%; height: 180%; 
   background: radial-gradient(circle, rgba(212, 175, 55, 0.35) 0%, rgba(181, 137, 63, 0.15) 30%, transparent 65%);
   border-radius: 50%;
   z-index: -1;
@@ -580,8 +588,9 @@ section{ position: relative; width: 100%; }
 
 .carousel {
   display: flex;
-  gap: clamp(1.5rem, 4vw, 3rem);
-  padding: var(--space-3) 0;
+  /* Updated dynamic spacing for large screens */
+  gap: clamp(1.5rem, 10vw, 15vw);
+  padding: var(--space-3) calc(50vw - (clamp(280px, 50vw, 600px) / 2));
   width: 100vw;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch; 
@@ -595,14 +604,9 @@ section{ position: relative; width: 100%; }
 
 .carousel::-webkit-scrollbar { display: none; }
 
-.carousel::before,
-.carousel::after {
-  content: '';
-  flex: 0 0 calc(50vw - (clamp(280px, 75vw, 360px) / 2));
-}
-
 .event-card {
-  flex: 0 0 clamp(280px, 75vw, 360px); 
+  /* Updated to allow scaling up cleanly on large monitors */
+  flex: 0 0 clamp(280px, 50vw, 600px); 
   scroll-snap-align: center;
   scroll-snap-stop: always;
   background: var(--surface);
@@ -624,8 +628,8 @@ section{ position: relative; width: 100%; }
 }
 
 .event-card__illustration { 
-  width: 150px; 
-  height: 150px; 
+  width: clamp(120px, 20vw, 180px); 
+  height: clamp(120px, 20vw, 180px); 
   margin: 0 auto var(--space-2); 
   display: block; 
 }
