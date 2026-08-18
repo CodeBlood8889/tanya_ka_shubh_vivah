@@ -116,7 +116,7 @@
     </div>
   </section>
 
-  <!-- ============ EVENTS CAROUSEL ============ -->
+  <!-- ============ EVENTS CAROUSEL (ANIMATED CHARACTERS) ============ -->
   <section class="events reveal" id="eventsSection">
     <p class="events__eyebrow">The Celebrations</p>
     <h2 class="events__title">Wedding Festivities</h2>
@@ -124,95 +124,56 @@
 
     <div class="carousel" id="eventCarousel">
       
+      <!-- Haldi Animated GIF -->
       <article class="event-card" data-bg-color="#FFF8E3">
-        <svg class="event-card__illustration" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="45" fill="#FEF5E7"/>
-          <circle class="anim-splash-1" cx="35" cy="30" r="5" fill="#F39C12"/>
-          <circle class="anim-splash-2" cx="65" cy="25" r="4" fill="#E67E22"/>
-          <circle class="anim-splash-3" cx="50" cy="15" r="6" fill="#F1C40F"/>
-          <path d="M 20 60 Q 50 95 80 60 Z" fill="var(--gold)"/>
-          <rect x="15" y="55" width="70" height="6" rx="3" fill="var(--gold-soft)"/>
-          <path d="M 25 55 Q 50 30 75 55 Z" fill="#F1C40F"/>
-          <path d="M 35 55 Q 50 20 65 55 Z" fill="#F39C12"/>
-        </svg>
-        <h3 class="event-card__name">Haldi</h3>
-        <p class="event-card__date">29th November</p>
+        <div class="scene-layer" style="background-color: #FFF8E3;">
+          <video class="character-gif" autoplay muted loop>
+            <source src="./assets/haldi.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="glass-plate">
+          <h3 class="event-card__name">Haldi</h3>
+          <p class="event-card__date">29th November</p>
+        </div>
       </article>
 
+      <!-- Sangeet Animated GIF -->
       <article class="event-card" data-bg-color="#F5EEF8">
-        <svg class="event-card__illustration" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="45" fill="#F4ECF7"/>
-          <g class="anim-note-1">
-            <path d="M 25 45 L 25 25 L 40 20 L 40 40" stroke="var(--wine)" stroke-width="2" fill="none"/>
-            <circle cx="23" cy="45" r="4" fill="var(--wine)"/>
-            <circle cx="38" cy="40" r="4" fill="var(--wine)"/>
-          </g>
-          <g class="anim-note-2">
-            <path d="M 75 35 L 75 15 L 85 12 L 85 32" stroke="var(--wine)" stroke-width="2" fill="none"/>
-            <circle cx="73" cy="35" r="3" fill="var(--wine)"/>
-            <circle cx="83" cy="32" r="3" fill="var(--wine)"/>
-          </g>
-          <g class="anim-instrument" transform-origin="50px 70px">
-            <path d="M 45 10 L 55 10 L 52 45 L 48 45 Z" fill="var(--ink-soft)"/>
-            <path d="M 40 45 C 20 45, 25 85, 50 85 C 75 85, 80 45, 60 45 Z" fill="var(--gold)"/>
-            <circle cx="50" cy="65" r="10" fill="var(--wine-deep)"/>
-            <path d="M 48 10 L 48 80" stroke="#FFF" stroke-width="0.5"/>
-            <path d="M 52 10 L 52 80" stroke="#FFF" stroke-width="0.5"/>
-          </g>
-        </svg>
-        <h3 class="event-card__name">Sangeet</h3>
-        <p class="event-card__date">29th November</p>
+        <div class="scene-layer" style="background-color: #F5EEF8;">
+          <video class="character-gif" autoplay muted loop>
+            <source src="./assets/sangeet.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="glass-plate">
+          <h3 class="event-card__name">Sangeet</h3>
+          <p class="event-card__date">29th November</p>
+        </div>
       </article>
 
+      <!-- Baarat Animated GIF -->
       <article class="event-card" data-bg-color="#FFF2EA">
-        <svg class="event-card__illustration" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="45" fill="#FDEDEC"/>
-          <g class="anim-drum" transform-origin="50px 60px">
-            <rect x="25" y="40" width="50" height="35" rx="15" fill="var(--wine)"/>
-            <path d="M 35 40 L 25 55 L 35 75" stroke="var(--gold)" stroke-width="2" fill="none"/>
-            <path d="M 45 40 L 35 55 L 45 75" stroke="var(--gold)" stroke-width="2" fill="none"/>
-            <path d="M 55 40 L 45 55 L 55 75" stroke="var(--gold)" stroke-width="2" fill="none"/>
-            <path d="M 65 40 L 55 55 L 65 75" stroke="var(--gold)" stroke-width="2" fill="none"/>
-            <rect x="20" y="42" width="6" height="31" rx="3" fill="var(--gold)"/>
-            <rect x="74" y="42" width="6" height="31" rx="3" fill="var(--gold)"/>
-          </g>
-          <g class="anim-stick-left" transform-origin="20px 30px">
-            <path d="M 10 15 L 23 45" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>
-            <circle cx="10" cy="15" r="5" fill="var(--gold)"/>
-          </g>
-          <g class="anim-stick-right" transform-origin="80px 30px">
-            <path d="M 90 15 L 77 45" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>
-            <circle cx="90" cy="15" r="5" fill="var(--gold)"/>
-          </g>
-        </svg>
-        <h3 class="event-card__name">Baarat</h3>
-        <p class="event-card__date">30th November</p>
+        <div class="scene-layer" style="background-color: #FFF2EA;">
+          <video class="character-gif" autoplay muted loop>
+            <source src="./assets/shaadi.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="glass-plate">
+          <h3 class="event-card__name">Shaadi</h3>
+          <p class="event-card__date">30th November</p>
+        </div>
       </article>
 
+      <!-- Reception Animated GIF -->
       <article class="event-card" data-bg-color="#FBF7EE">
-        <svg class="event-card__illustration" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="45" fill="#FCF3CF"/>
-          <g class="anim-sparkle-1" transform-origin="25px 25px">
-            <path d="M25 15 L 27 23 L 35 25 L 27 27 L 25 35 L 23 27 L 15 25 L 23 23 Z" fill="var(--gold)"/>
-          </g>
-          <g class="anim-sparkle-2" transform-origin="75px 20px">
-            <path d="M75 12 L 76.5 18.5 L 83 20 L 76.5 21.5 L 75 28 L 73.5 21.5 L 67 20 L 73.5 18.5 Z" fill="var(--gold)"/>
-          </g>
-          <g class="anim-glass-l" transform-origin="40px 85px">
-            <path d="M 30 85 L 50 85" stroke="var(--wine)" stroke-width="3" stroke-linecap="round"/>
-            <rect x="39" y="65" width="2" height="20" fill="var(--wine)"/>
-            <path d="M 33 45 L 36 60 Q 40 65 44 60 L 47 45 Z" fill="#F1C40F"/>
-            <path d="M 30 30 L 35 60 Q 40 68 45 60 L 50 30 Z" fill="rgba(255,255,255,0.6)" stroke="var(--wine)" stroke-width="2"/>
-          </g>
-          <g class="anim-glass-r" transform-origin="60px 85px">
-            <path d="M 50 85 L 70 85" stroke="var(--wine)" stroke-width="3" stroke-linecap="round"/>
-            <rect x="59" y="65" width="2" height="20" fill="var(--wine)"/>
-            <path d="M 53 45 L 56 60 Q 60 65 64 60 L 67 45 Z" fill="#F1C40F"/>
-            <path d="M 50 30 L 55 60 Q 60 68 65 60 L 70 30 Z" fill="rgba(255,255,255,0.6)" stroke="var(--wine)" stroke-width="2"/>
-          </g>
-        </svg>
-        <h3 class="event-card__name">Reception</h3>
-        <p class="event-card__date">30th November</p>
+        <div class="scene-layer" style="background-color: #FBF7EE;">
+           <video class="character-gif" autoplay muted loop>
+            <source src="./assets/reception.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="glass-plate">
+          <h3 class="event-card__name">Reception</h3>
+          <p class="event-card__date">30th November</p>
+        </div>
       </article>
 
     </div>
