@@ -18,6 +18,7 @@ window.scrollTo(0, 0);
       loader.classList.add('is-hidden');
     }
 
+    // Wake up the audio
     audio.volume = 1;
     audio.load(); 
     
@@ -28,6 +29,16 @@ window.scrollTo(0, 0);
         document.addEventListener('touchstart', () => { audio.play(); }, { once: true });
       });
     }
+
+    // === NEW: THE IOS BATTERY SAVER WAKE-UP HACK ===
+    // This forces all videos to start playing the moment they tap the envelope
+    const allVideos = document.querySelectorAll('.character-gif');
+    allVideos.forEach(vid => {
+        let vidPromise = vid.play();
+        if (vidPromise !== undefined) {
+            vidPromise.catch(err => console.log("Video blocked by OS:", err));
+        }
+    });
 
     startPetals();
   }

@@ -207,10 +207,7 @@ section{ position: relative; width: 100%; }
   justify-content: center;
   text-align: center;
   padding: var(--space-4) var(--space-2);
-  
-  /* FIXED SCROLL OVERLAP BUG: Changed from position: sticky to position: relative */
   position: relative; 
-  
   z-index: 1; 
   background: transparent; 
 }
@@ -586,6 +583,20 @@ section{ position: relative; width: 100%; }
   to { transform: translateX(4px); }
 }
 
+/* ================= PERFECTLY SPACED EVENT HEADER ================= */
+.events-header {
+  /* This math ensures the text is always pushed down exactly to the bottom of the garland */
+  margin-top: clamp(65px, 11vw, 120px);
+  margin-bottom: var(--space-3);
+  position: relative;
+  z-index: 2;
+}
+
+/* Reset the events padding so our new dynamic header handles the spacing */
+.events {
+  padding-top: var(--space-4);
+}
+
 .carousel {
   display: flex;
   gap: clamp(1.5rem, 10vw, 15vw);
@@ -604,18 +615,16 @@ section{ position: relative; width: 100%; }
 .carousel::-webkit-scrollbar { display: none; }
 
 .event-card {
-  /* Slightly wider minimum width for mobile, fluid up to large screens */
-  flex: 0 0 clamp(290px, 65vw, 600px); 
-  
-  /* Dynamic height: Shrinks on mobile to stop extreme video cropping, grows on laptops */
-  height: clamp(340px, 55vh, 450px); 
+  /* Increased from 65vw to 85vw: Makes the card significantly wider on mobile to fit the video aspect ratio */
+  flex: 0 0 clamp(320px, 85vw, 600px); 
+  height: clamp(380px, 60vh, 480px); 
   
   scroll-snap-align: center;
   scroll-snap-stop: always;
   background: var(--surface);
   
-  /* Adjusted border-radius slightly to accommodate the new dynamic heights seamlessly */
-  border-radius: 140px 140px 24px 24px;
+  /* Reduced the curve from 180px to 100px so it doesn't chop off the top corners of your video */
+  border-radius: 100px 100px 24px 24px;
   
   border: 1px solid var(--gold-soft);
   box-shadow: inset 0 0 0 6px var(--surface), 0 4px 10px rgba(0,0,0,0.05);
@@ -626,6 +635,13 @@ section{ position: relative; width: 100%; }
   transition: transform 0.5s var(--ease-soft), opacity 0.5s var(--ease-soft), box-shadow 0.5s var(--ease-soft), border-color 0.5s ease;
   position: relative;
   overflow: hidden;
+}
+
+/* Brings the majestic deep arch back only for larger laptop screens */
+@media (min-width: 768px) {
+  .event-card {
+    border-radius: 180px 180px 24px 24px;
+  }
 }
 
 .event-card.is-focused {
@@ -662,9 +678,18 @@ section{ position: relative; width: 100%; }
 .scene-layer {
   position: absolute;
   inset: 6px; 
-  border-radius: 180px 180px 20px 20px;
+  /* Matches the mobile 100px outer curve (100 - 6 = 94) */
+  border-radius: 94px 94px 18px 18px;
   overflow: hidden;
   z-index: 1;
+}
+
+/* Brings the majestic deep curve back for larger laptop screens */
+@media (min-width: 768px) {
+  .scene-layer {
+    /* Matches the desktop 180px outer curve (180 - 6 = 174) */
+    border-radius: 174px 174px 18px 18px;
+  }
 }
 
 /* ANIMATED CHARACTER GIF STYLING */
