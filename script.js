@@ -4,7 +4,7 @@ if ('scrollRestoration' in history) {
 }
 window.scrollTo(0, 0);
 
-// 1. SMART AUDIO CONTROLLER (Bulletproof Android & iOS Fix)
+// 1. SMART AUDIO CONTROLLER (Bulletproof Android, iOS & Background Fix)
 (function initLoaderAndAudio() {
   const loader = document.getElementById('introLoader');
   const audio = document.getElementById('weddingAudio');
@@ -39,6 +39,21 @@ window.scrollTo(0, 0);
 
   document.addEventListener('click', dismissAndPlay, { once: true });
   document.addEventListener('touchend', dismissAndPlay, { once: true, passive: true });
+
+  // === NEW: STOP MUSIC WHEN BROWSER TAB OR APP IS CLOSED/MINIMIZED ===
+  document.addEventListener('visibilitychange', function() {
+    if (!audio) return;
+    
+    if (document.hidden) {
+      // Pause music when user leaves the app or switches tabs
+      audio.pause();
+    } else {
+      // Resume music only if they had already tapped to enter the invitation
+      if (isUnlocked) {
+        audio.play().catch(e => console.log("Resume blocked: ", e));
+      }
+    }
+  });
 })();
 
 // 2. Petal Generation
